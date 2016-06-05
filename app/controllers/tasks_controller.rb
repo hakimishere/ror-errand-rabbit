@@ -1,10 +1,10 @@
 class TasksController < ApplicationController
 
-	before_action :find_task, only: [:show, :edit, :update, :detroy]
+	before_action :find_task, only: [:show, :edit, :update, :destroy]
 	# find_task only useful when task exists. When creating, it makes no sense to find a task you're trying to create.
 
 	def index
-
+		@tasks = Task.all.order("created_at DESC")
 	end
 	
 	def show
@@ -30,11 +30,16 @@ class TasksController < ApplicationController
 	end
 
 	def update
-		
+		if @task.update(tasks_params)
+			redirect_to @task
+		else
+			render 'Edit'
+		end
 	end
 
 	def destroy
-		
+		@task.destroy
+		redirect_to root_path
 	end
 
 	private
